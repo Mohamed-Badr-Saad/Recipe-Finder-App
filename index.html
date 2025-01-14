@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Recipe Finder</title>
+    <meta name="author" content="Mohamed Badr">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="keywords" content="Recipe Finder Food Ingredient Categories">
+    <meta name="description" content="Website that searches for the recipes according to your requirements">
+    <meta http-equiv="refresh" content="3; ./home.html">
+    <meta charset="utf-8">
+
+    <link rel="stylesheet" href="./homeStyle.css">
+    <style>
+        @keyframes scaleImage {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(1.2);
+            }
+        }
+
+        body {
+            background-image: url(./images/kitchen_orange.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        .pageBox {
+            /* position: fixed;
+            top: 35%;
+            left: 35%; */
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pageBox>img {
+            width: 50%;
+            height: auto;
+            animation: scaleImage 2.9s forwards;
+        }
+
+        .pageBox>img:hover {
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div class="pageBox">
+        <!-- <a href="./home.html"><img src="./images/logo3.png" alt="Recipe Finder" title="Recipe Finder"></a> -->
+        <img src="./images/logo3.png" alt="Recipe Finder" title="Recipe Finder" id="recipeFinderId">
+    </div>
+
+    <script>
+        document.querySelector('#recipeFinderId').onclick = function () {
+            window.open("./home.html");
+        }
+    </script>
+</body>
+
+</html>

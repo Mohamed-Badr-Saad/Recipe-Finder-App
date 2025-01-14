@@ -1,0 +1,52 @@
+body {
+    border: 10px solid blue; 
+    height: 80%;
+}
+
+#pageLayout {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    grid-template-rows: 15% 18% 40% 20%;
+    gap: 20px;
+    height: 100%;
+    width: 100%;
+
+}
+
+#searchBoxId {
+    grid-column: span 4;
+    grid-row: span 1;
+    border: solid 2px red;
+    padding: 1%;
+    height: 95%;
+    background-color: rgba(255, 235, 205, 0.8);
+    border-radius: 8px;
+    order: 3; /* This makes searchBoxId the first item */
+
+}
+
+#filterBoxId {
+    grid-column: span 4;
+    grid-row: span 1;
+    border: solid 2px red;
+    padding: 1%;
+    overflow-y: scroll;
+    height: 95%;
+    background-color: rgba(255, 235, 205, 0.7);
+    border-radius: 8px;
+    order: 4; 
+
+}
+
+
+#areaList{
+    column-count: 4;
+    column-gap: 20px;
+    text-align: center;
+}
+
+#areaList li {
+    list-style-position: inside;
+    margin: 0;
+    padding: 0;
+}

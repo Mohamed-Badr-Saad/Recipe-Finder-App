@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Meal Info</title>
+    <meta name="author" content="Mohamed Badr">
+    <meta charset="utf-8">
+    <!------------------------------Google Fonts------------------------------------->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allison">
+    <!----------------------------------------------------------------------------------->
+    <!-----------------------------------------BootStrap---------------------------------->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!----------------------------------------------------------------------------------->
+    <link rel="stylesheet" href="./homeStyle.css">
+    <link rel="stylesheet" href="./categories.css">
+    <link rel="stylesheet" href="./mealInfo.css">
+    <style>
+        html {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        body {
+            width: 95%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div id="mealInfoLayout">
+        <header id="headerBoxId">
+            <div id="headerLayout">
+                <div id="logo">
+                    <a href="./home.html"><img src="./images/logo3.png" alt="Recipe Finder" title="Recipe Finder"></a>
+                </div>
+                <div id="buttons" class="headerFlexBox">
+                    <a href="./home.html" class="btn btn-lg btn-primary">Home</a>
+                    <a href="./categories.html" class="btn btn-lg btn-primary">Categories</a>
+                </div>
+            </div>
+        </header>
+        <h1 id="title" style="grid-area: title;">Meal Info</h1>
+        <div id="mealNameId" class="boxStyle"></div>
+        <div id="imageId" class="boxStyle"></div>
+        <div id="ingredientId" class="boxStyle">
+            <ul id="ingredientsListId">
+                <h2>Ingredients</h2>
+            </ul>
+        </div>
+        <div id="youtubeId" class="boxStyle">
+            <iframe name="youtubeFrame" id="youtubeFrameId" allowfullscreen></iframe>
+        </div>
+        <div id="instructionId" class="boxStyle">
+            <h2>Instructions</h2>
+        </div>
+    </div>
+    <!--  -->
+
+
+    <script>
+        console.log(location.search);
+        var submittedMealName = location.search.split('=')[1];
+        console.log(submittedMealName);
+        recipeFinderByMeal(submittedMealName);
+        function recipeFinderByMeal(submittedMealName) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/search.php?s=${submittedMealName}`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealObject = JSON.parse(xhr.responseText);
+                    recipeFinderDisplayMealInfo(mealObject);
+                }
+            }
+            xhr.send();
+        }
+
+        function recipeFinderDisplayMealInfo(mealObject) {
+            let meal = mealObject.meals[0];
+            console.log(meal);
+            /********Create a new img element******/
+            let mealImage = document.createElement('img');
+            mealImage.src = meal.strMealThumb;
+            mealImage.alt = meal.strMeal;
+            mealImage.title = meal.strMeal;
+            /**************************************/
+            /************Create new h element***********/
+            let mealName = document.createElement('h1');
+            mealName.innerText = meal.strMeal;
+            let mealArea = document.createElement('h3');
+            mealArea.innerText = meal.strArea;
+            let mealCategory = document.createElement('h4');
+            mealCategory.innerText = meal.strCategory;
+            /*******************************************/
+            /************Create li element for ingredient***********/
+            //create list
+            let ingredientsList = document.querySelector("#ingredientsListId");
+            var counter = 1;
+            var ingredientKey = `strIngredient${counter}`;
+            var ingredientMeasureKey = `strMeasure${counter}`;
+            while (meal[ingredientKey] != undefined && meal[ingredientKey] != '' && meal[ingredientKey] != null && counter < 20) {
+                let mealIngredient = meal[ingredientKey];
+                let mealIngredientMeasure = meal[ingredientMeasureKey];
+                let item = document.createElement('li');
+                item.innerText = `${mealIngredientMeasure}  ${mealIngredient}`;
+                ingredientsList.append(item);
+                ingredientKey = `strIngredient${++counter}`;
+                ingredientMeasureKey = `strMeasure${counter}`;
+                // console.log(`counter:${counter} ingredientKey:${ingredientKey}  ingredientMeasureKey:${ingredientMeasureKey}`);
+            }
+            counter = 1;
+            /*******************************************/
+            /***********Extract youtube link suitable for iframe*******/
+            console.log(meal.strYoutube);
+            console.log(meal.strYoutube.split('=')[1]);
+            var mealYoutubeVideoIdentifier = meal.strYoutube.split('=')[1];
+            var mealYoutubeLink = `https://www.youtube.com/embed/${mealYoutubeVideoIdentifier}`;
+            document.querySelector("#youtubeFrameId").src = mealYoutubeLink;
+            /**********************************************************/
+            /***********create p element for instructions*********/
+            let mealInstructions = document.createElement('p');
+            mealInstructions.innerText = meal.strInstructions;
+            document.querySelector("#instructionId").appendChild(mealInstructions);
+            /******************************************************/
+            /*****Append elements in their corresponding div*****/
+            document.querySelector("#mealNameId").appendChild(mealName);
+            document.querySelector("#mealNameId").appendChild(mealArea);
+            document.querySelector("#mealNameId").appendChild(mealCategory);
+            document.querySelector("#imageId").appendChild(mealImage);
+            document.querySelector("#ingredientId").appendChild(ingredientsList);
+            /***************************************************/
+        }
+    </script>
+</body>
+
+</html>

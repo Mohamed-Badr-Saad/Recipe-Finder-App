@@ -1,0 +1,88 @@
+body {
+    display: flex;
+    justify-content: center;
+}
+
+#mealInfoLayout {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    grid-template-rows: auto auto auto minmax(100px,auto) minmax(400px, auto) auto ;
+    gap: 0;
+    grid-template-areas:
+        'header header header header header header header header header '
+        'title title title title title title title title title'
+        'mealName mealName mealName mealName mealName image image image image'
+        'ingredient ingredient ingredient ingredient ingredient image image image image'
+        'ingredient ingredient ingredient ingredient ingredient youtube youtube youtube youtube'
+        'instructions instructions instructions instructions instructions instructions instructions instructions instructions'
+    ;
+    width: 100%;
+    height: 90%;
+}
+
+.boxStyle {
+    border: 1px solid rgba(179, 61, 24, 1);
+    padding: 20px;
+    /* background-color: blanchedalmond; */
+    background-color: rgba(255, 235, 205, 0.9);
+    border-radius: 3px;
+
+}
+
+#headerBoxId {
+    /*to overwrite the same id in home.css*/
+    grid-area: header;
+    /* grid-column: span 9;
+    grid-row: span 2; */
+}
+
+#mealNameId {
+    grid-area: mealName;
+    /* grid-column: span 5;
+    grid-row: span 1; */
+}
+
+#imageId {
+    grid-area: image;
+    /* grid-column: span 4;
+    grid-row: span 2; */
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#imageId>img:hover {
+    transform: scale(1.1);
+}
+
+#imageId>img {
+    width: 80%;
+    height: 80%;
+    transition: transform 0.3s ease;
+}
+
+#ingredientId {
+    grid-area: ingredient;
+    /* grid-column: span 5;
+    grid-row: span 3; */
+}
+
+#youtubeId {
+    grid-area: youtube;
+    /* grid-column: span 4;
+    grid-row: span 2; */
+}
+
+#instructionId {
+    grid-area: instructions;
+    /* grid-column: span 9;
+    grid-row: span 4; */
+}
+
+iframe {
+    width: 100%;
+    height: 100%;
+}

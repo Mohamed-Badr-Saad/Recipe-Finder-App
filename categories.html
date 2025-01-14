@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Categories</title>
+    <meta name="author" content="Mohamed Badr">
+    <meta charset="utf-8">
+    <!------------------------------Google Fonts------------------------------------->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allison">
+    <!----------------------------------------------------------------------------------->
+    <!-----------------------------------------BootStrap---------------------------------->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!----------------------------------------------------------------------------------->
+    <link rel="stylesheet" href="./homeStyle.css">
+    <link rel="stylesheet" href="./categories.css">
+    <style>
+        html {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        body {
+            width: 95%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #categoryTextBox {
+            display: none;
+        }
+
+        .categoryLayout:hover {
+            cursor: pointer;
+        }
+
+        #pageLayout {
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-template-rows: 1% 3% 6%;
+            gap: 20px;
+            /* height: 100%; */
+            width: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="pageLayout">
+
+        <header id="headerBoxId">
+            <div id="headerLayout">
+                <div id="logo">
+                    <a href="./home.html"><img src="./images/logo3.png" alt="Recipe Finder" title="Recipe Finder"></a>
+                </div>
+                <div id="buttons" class="headerFlexBox">
+                    <a href="./home.html" class="btn btn-lg btn-primary">Home</a>
+                    <a href="./categories.html" class="btn btn-lg btn-primary">Categories</a>
+                </div>
+            </div>
+        </header>
+
+        <div id="title">
+            Categories
+        </div>
+        <div id="categoriesId">
+        </div>
+    </div>
+
+
+
+    <form action="./meals.html" method="get" name="categoryForm">
+        <input type="text" name="category" id="categoryTextBox">
+    </form>
+
+
+    <script>
+        /*******************list all the categories********************/
+        var xhrCategories = new XMLHttpRequest();
+        xhrCategories.open('get', 'https://www.themealdb.com/api/json/v1/1/categories.php', true);
+        xhrCategories.onreadystatechange = function () {
+            if (xhrCategories.readyState == 4 && xhrCategories.status == 200) {
+                var categoriesObject = JSON.parse(xhrCategories.responseText);
+                console.log(categoriesObject);
+                for (let category of categoriesObject.categories) {
+                    /**********Create new div element*******/
+                    let box = document.createElement('div');
+                    box.classList.add('categoryLayout');
+                    /**************************************/
+                    /********Create a new img element******/
+                    let categoryImage = document.createElement('img');
+                    categoryImage.src = category.strCategoryThumb;
+                    categoryImage.alt = category.strCategory;
+                    categoryImage.title = category.strCategory;
+                    categoryImage.classList.add('imagePos');
+                    /**************************************/
+                    /************Create new h element***********/
+                    let categoryName = document.createElement('h1');
+                    categoryName.textContent = category.strCategory;
+                    categoryName.classList.add('namePos');
+                    /*******************************************/
+                    /************Create new p element***********/
+                    let categoryDescription = document.createElement('p');
+                    categoryDescription.innerText = category.strCategoryDescription;
+                    categoryDescription.classList.add('descriptionPos');
+                    /******************************************/
+                    /*****Append img, h2, and p to the div (box)*****/
+                    box.appendChild(categoryImage);
+                    box.appendChild(categoryName);
+                    box.appendChild(categoryDescription);
+                    /***********************************************/
+                    /****Append the div (box) to the categories section****/
+                    let categoriesSection = document.querySelector("#categoriesId");
+                    categoriesSection.appendChild(box);
+                    /******************************************************/
+                    /*box.onmousemove = function () {
+                        categoryImage.style.width = '100%';
+                        categoryImage.style.height = '95%';
+                    }
+                    box.onmouseleave = function () {
+                        categoryImage.style.width = '90%';
+                        categoryImage.style.height = '90%';
+                    }*/
+                    box.onclick = function () {
+                        document.querySelector("#categoryTextBox").value = category.strCategory;
+                        document.categoryForm.submit();
+                    }
+
+                }
+            }
+        }
+        xhrCategories.send();
+        /**************************************************************/
+
+    </script>
+</body>
+
+
+</html>

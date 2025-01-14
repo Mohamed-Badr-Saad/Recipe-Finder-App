@@ -1,0 +1,81 @@
+body {
+    /* background-color: blanchedalmond;
+                color: aliceblue; */
+    background-color: rgba(237, 84, 36, 255);
+
+
+}
+
+#title {
+    font-family: "Allison", sans-serif;
+    font-size: 100pt;
+    color: aliceblue;
+    text-align: center;
+    grid-column: span 4;
+    grid-row: span 1;
+}
+
+#categoriesId {
+    grid-column: span 4;
+    grid-row: span 1;
+    display: flex;
+    justify-content: center;
+flex-wrap: wrap;
+    /* padding-left: auto;
+    padding-right: auto; */
+}
+
+.categoryLayout {
+
+    display: grid;
+    grid-template-columns: 35% 60%;
+    grid-template-rows: 18% 80%;
+    gap: 20px;
+    height: 90%;
+    width: 96vw;
+    overflow: hidden;
+    grid-template-areas:
+        'image name'
+        'image description';
+    border: 2px solid rgba(179, 61, 24, 1);
+    border-radius: 8px;
+    padding: 15px;
+    /* background-color: blanchedalmond; */
+    background-color: rgba(255, 235, 205, 0.9);
+    margin-bottom: 50px;
+    transition: transform 0.3s ease;
+}
+
+.categoryLayout:hover {
+    transform: scale(1.05);
+}
+
+
+.imagePos {
+    grid-area: image;
+    width: 90%;
+    height: 90%;
+    transition: transform 0.3s ease;
+}
+
+.categoryLayout:hover .imagePos {
+    transform: scale(1.1);
+}
+
+.namePos {
+    grid-area: name;
+
+}
+
+.descriptionPos {
+    grid-area: description;
+    font-weight: 300;
+    font-size: larger;
+    overflow-y: auto;
+}
+
+/* .btn {
+    margin: 2px;
+    background-color: blanchedalmond;
+    color: rgba(179, 61, 24, 1);
+} */

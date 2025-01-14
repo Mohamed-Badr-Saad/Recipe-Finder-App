@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Meals</title>
+    <meta name="author" content="Mohamed Badr">
+    <meta charset="utf-8">
+    <!------------------------------Google Fonts------------------------------------->
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allison">
+
+    <!----------------------------------------------------------------------------------->
+    <!-----------------------------------------BootStrap---------------------------------->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!----------------------------------------------------------------------------------->
+    <link rel="stylesheet" href="./homeStyle.css">
+    <link rel="stylesheet" href="./categories.css">
+    <style>
+        html {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        body {
+            width: 95%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #mealsLayout {
+            /* display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            flex-wrap: wrap; */
+            grid-column: span 4;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            /* padding-right: 30px;
+            margin-right: 60px; */
+            width: 100%;
+        }
+
+        .mealBox {
+            border: 2px solid rgba(179, 61, 24, 1);
+            /* background-color: blanchedalmond; */
+            background-color: rgba(255, 235, 205, 0.9);
+            padding: 2px;
+            /* margin: 10px; */
+            overflow: hidden;
+            width: fit-content;
+            height: fit-content;
+            grid-column: span 1;
+            border-radius: 8px;
+
+        }
+
+        .mealBox>img {
+            width: 100%;
+            text-align: center;
+            height: 70%;
+            padding: 10px;
+        }
+
+        img {
+            transition: transform 0.3s ease;
+        }
+
+        .mealBox:hover img {
+            transform: scale(1.1);
+
+        }
+
+        .mealBox {
+            transition: transform 0.3s ease;
+        }
+
+        .mealBox:hover {
+            transform: scale(1.1);
+            cursor: pointer;
+        }
+
+        #pageLayout {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: 1% 8% auto;
+            gap: 20px;
+            /* height: 100%; */
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="pageLayout">
+        <header id="headerBoxId">
+            <div id="headerLayout">
+                <div id="logo">
+                    <a href="./home.html"><img src="./images/logo3.png" alt="Recipe Finder" title="Recipe Finder"></a>
+                </div>
+                <div id="buttons" class="headerFlexBox">
+                    <a href="./home.html" class="btn btn-lg btn-primary">Home</a>
+                    <a href="./categories.html" class="btn btn-lg btn-primary">Categories</a>
+                </div>
+            </div>
+        </header>
+
+        <h1 id="title">Meals</h1>
+
+        <div id="mealsLayout">
+        </div>
+    </div>
+
+
+    <form action="./mealInfo.html" method="get" name="mealNameForm">
+        <input type="text" name="mealName" id="mealNameId" style="display: none;">
+    </form>
+
+
+
+
+    <script>
+        console.log(location.search);
+        var searchId = location.search.split('=')[0];
+        console.log(searchId);
+        if (searchId == '?mainIngredient') {
+            var submittedMainIngredient = location.search.split('=')[1];
+            console.log(submittedMainIngredient);
+            recipeFinderByMainIngredient(submittedMainIngredient);
+        }
+        else if (searchId == '?mealName') {
+            var submittedMealName = location.search.split('=')[1];
+            console.log(submittedMealName);
+            recipeFinderByMeal(submittedMealName);
+        }
+        else if (searchId == '?category') {
+            var submittedCategory = location.search.split('=')[1];
+            console.log(submittedCategory);
+            recipeFinderByCategory(submittedCategory);
+        }
+        else if (searchId == '?area') {
+            var submittedArea = location.search.split('=')[1];
+            console.log(submittedArea);
+            recipeFinderByArea(submittedArea);
+        }
+
+
+        function recipeFinderByArea(submittedArea) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/filter.php?a=${submittedArea}`, true);
+            console.log("55");
+            xhr.onreadystatechange = function () {
+                console.log("66");
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealObject = JSON.parse(xhr.responseText);
+                    console.log(mealObject);
+                    recipeFinderDisplayMeals(mealObject);
+                }
+            }
+            xhr.send();
+        }
+
+        function recipeFinderByCategory(submittedCategory) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/filter.php?c=${submittedCategory}`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealObject = JSON.parse(xhr.responseText);
+                    console.log(mealObject);
+                    recipeFinderDisplayMeals(mealObject);
+                }
+            }
+            xhr.send();
+        }
+
+        function recipeFinderByMainIngredient(submittedMainIngredient) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/filter.php?i=${submittedMainIngredient}`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealObject = JSON.parse(xhr.responseText);
+                    console.log(mealObject);
+                    recipeFinderDisplayMeals(mealObject);
+                }
+            }
+            xhr.send();
+        }
+
+
+        function recipeFinderByMeal(submittedMealName) {
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/search.php?s=${submittedMealName}`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealObject = JSON.parse(xhr.responseText);
+                    console.log(mealObject);
+                    recipeFinderDisplayMeals(mealObject);
+                }
+            }
+            xhr.send();
+        }
+
+        function recipeFinderDisplayMeals(mealObject) {
+            for (let meal of mealObject.meals) {
+                /**********Create new div element*******/
+                let mealBox = document.createElement('div');
+                mealBox.classList.add('mealBox');
+                /**************************************/
+                /********Create a new img element******/
+                let mealImage = document.createElement('img');
+                mealImage.src = meal.strMealThumb;
+                mealImage.alt = meal.strMeal;
+                mealImage.title = meal.strMeal;
+                mealBox.appendChild(mealImage);//Append img to the div (mealBox)
+                /**************************************/
+                /************Create new h element***********/
+                let mealName = document.createElement('h3');
+                mealBox.appendChild(mealName);//Append h3 to the div (mealBox)
+                mealName.innerText = meal.strMeal;
+                if (searchId == '?mealName') {//in case the user searched by meal name ,the json file in this case would have the following info
+                    let mealArea = document.createElement('h4');
+                    mealArea.innerText = meal.strArea;
+                    let mealCategory = document.createElement('h4');
+                    mealCategory.innerText = meal.strCategory;
+                    mealBox.appendChild(mealArea);//Append h4 to the div (mealBox)
+                    mealBox.appendChild(mealCategory);//Append h4 to the div (mealBox)
+                }
+                /*******************************************/
+                /****Append the div (mealBox) to the mealsLayout section****/
+                document.querySelector("#mealsLayout").appendChild(mealBox)
+                /******************************************************/
+                // mealBox.onmousemove = function () {
+                //     mealImage.style.width = '330px';
+                //     mealImage.style.height = '330px';
+                // }
+                // mealBox.onmouseleave = function () {
+                //     mealImage.style.width = '300px';
+                //     mealImage.style.height = '300px';
+                // }
+                mealBox.onclick = function () {
+                    document.querySelector("#mealNameId").value = meal.strMeal;
+                    document.mealNameForm.submit();
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

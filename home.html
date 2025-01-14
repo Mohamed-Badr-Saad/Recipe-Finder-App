@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Recipe Finder</title>
+    <meta name="author" content="Mohamed Badr">
+    <meta name="description" content="food recipe ingredients chicken beef vegetable">
+    <meta charset="utf-8">
+    <!------------------------------Google Fonts------------------------------------->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Allison">
+    <!----------------------------------------------------------------------------------->
+    <!-----------------------------------------BootStrap---------------------------------->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <!----------------------------------------------------------------------------------->
+    <link rel="stylesheet" href="./homeStyle.css">
+    <!-- <link rel="stylesheet" media="screen and (max-width: 600px)" href="./homeStyleMobile.css"> -->
+    <style>
+        html {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        body {
+            height: 100%;
+            background-size: cover;
+            margin: 0%;
+            padding: 0%;
+            width: 95%;
+        }
+
+
+
+        #areaList>li {
+            margin: 3px;
+        }
+
+        #areaList>li:hover {
+            cursor: pointer;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="pageLayout">
+        <header id="headerBoxId">
+            <div id="headerLayout">
+                <div id="logo">
+                    <a href="./home.html"><img src="./images/logo3.png" alt="Recipe Finder" title="Recipe Finder"></a>
+                </div>
+                <div id="buttons" class="headerFlexBox">
+                    <a href="./home.html" class="btn btn-lg btn-primary">Home</a>
+                    <a href="./categories.html" class="btn btn-lg btn-primary">Categories</a>
+                </div>
+            </div>
+        </header>
+
+        <div id="title">
+            Recipe Finder
+        </div>
+        <!-- <div id="categoryBoxId">
+            <ul id="categoryList">
+            </ul>
+        </div> -->
+        <div id="filterBoxId">
+            <h2>Areas</h2>
+            <ul id="areaList">
+            </ul>
+        </div>
+        <div id="searchBoxId">
+            <nav>
+                <ul class="nav nav-tabs nav-pills">
+                    <li class="active"><a data-toggle="tab" href="#mealNameTab">Meal Name</a></li>
+                    <li><a data-toggle="tab" href="#mainIngredientTab">Main Ingredient</a></li>
+                    <li><a data-toggle="tab" href="#categoryTab">Category</a></li>
+                    <li><a data-toggle="tab" href="#areaTab">Area</a></li>
+                    <li><a data-toggle="tab" href="#randomMealTab">Random Meal</a></li>
+
+
+                </ul>
+
+                <div class="tab-content">
+                    <div id="mealNameTab" class="tab-pane fade in active">
+                        <h2>Search By Meal Name</h2>
+                        <div>
+                            <form action="./meals.html" method="get" name="mealsNamesForm">
+                                <input type="text" name="mealName" id="mealNameTextBox" pattern="[^\d]+"
+                                    title="you should enter letters only" placeholder="Enter Meal's Name"><span
+                                    class="wrongInputMessage" id="mealNameErrorMsgId"></span>
+                                <br><br>
+                                <button type="submit" class="btn btn-lg btn-primary">find recipe by Meal</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="randomMealTab" class="tab-pane fade">
+                        <h2>Random Meal</h2>
+                        <div>
+                            <form action="./mealInfo.html" method="get" name="randomMealNameForm">
+                                <input type="text" name="randomMealName" id="randomMealNameId" style="display: none;">
+                                <br><br>
+                                <button type="submit" class="btn btn-lg btn-primary">Random Meal</button>
+                            </form>
+                        </div>
+
+                    </div>
+                    <div id="mainIngredientTab" class="tab-pane fade">
+                        <h2>Search By Main Ingredient</h2>
+                        <div>
+                            <form action="./meals.html" method="get" name="mainIngredientForm">
+                                <input type="text" name="mainIngredient" id="mainIngredientTextBox" pattern="[^\d]+"
+                                    title="you should enter letters only" placeholder="Enter Main Ingredient"><span
+                                    class="wrongInputMessage" id="MainIngredientErrorMsgId"></span>
+                                <br><br>
+                                <button type="submit" class="btn btn-lg btn-primary">find recipe by main
+                                    ingredient</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="categoryTab" class="tab-pane fade">
+                        <h3>Search By Category</h3>
+                        <div>
+                            <form action="./meals.html" method="get" name="categoryForm">
+                                <input type="text" name="category" id="categoryTextBox" pattern="[^\d]+"
+                                    title="you should enter letters only" placeholder="Enter Category"><span
+                                    class="wrongInputMessage" id="categoryErrorMsgId"></span>
+                                <br><br>
+                                <button type="submit" class="btn btn-lg btn-primary">find meals by category</button>
+                            </form>
+                        </div>
+                    </div>
+                    <div id="areaTab" class="tab-pane fade">
+                        <h3>Search By Area</h3>
+                        <div>
+                            <form action="./meals.html" method="get" name="areaForm">
+                                <input type="text" name="area" id="areaTextBox" pattern="[^\d]+"
+                                    title="you should enter letters only" placeholder="Enter Area"><span
+                                    class="wrongInputMessage" id="areaErrorMsgId"></span>
+                                <br><br>
+                                <button type="submit" class="btn btn-lg btn-primary">find meals by area</button>
+                            </form>
+                        </div>
+                    </div>
+            </nav>
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+
+    <!-------------------------------------------------------------------------------------------------------------------------------------------->
+    <script>
+        document.mealsNamesForm.addEventListener('submit', function () {
+            recipeFinderByMeal(event);
+        });
+        function recipeFinderByMeal(event) {
+            event.preventDefault();//to stop form from submission till we verify the input 
+            var mealName = document.querySelector("#mealNameTextBox").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/search.php?s=${mealName}`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealObject = JSON.parse(xhr.responseText);
+                    console.log(mealObject);
+                    if (mealObject.meals != null && mealObject.meals.length > 0 && mealName != '') {
+                        console.log(mealObject);
+                        mealsNamesForm.submit();
+
+                    }
+                    else {//in case wrong input or a meal that is not in the database
+                        document.querySelector("#mealNameTextBox").style.backgroundColor = 'red';
+                        document.querySelector("#mealNameErrorMsgId").innerHTML = ' invalid input';
+                    }
+                }
+            }
+            xhr.send();
+            document.querySelector("#mealNameTextBox").onfocus = function () {
+                document.querySelector("#mealNameTextBox").style.backgroundColor = 'white'
+                document.querySelector("#mealNameErrorMsgId").innerHTML = '';
+
+            };
+        }
+
+        /*********************************************************************************/
+        document.randomMealNameForm.addEventListener('submit', function () {
+            recipeFinderRandomMeal(event);
+        });
+        function recipeFinderRandomMeal(event) {
+            event.preventDefault();//to stop form from submission till we get a random meal
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/random.php`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealObject = JSON.parse(xhr.responseText);
+                    console.log(mealObject);
+                    document.querySelector("#randomMealNameId").value = mealObject.meals[0].strMeal;
+                    console.log(mealObject.meals[0].strMeal);
+                    randomMealNameForm.submit();
+                }
+            }
+            xhr.send();
+        }
+        /*********************************************************************************/
+        document.mainIngredientForm.addEventListener('submit', function () {
+            recipeFinderByMainIngredient(event);
+        });
+        function recipeFinderByMainIngredient(event) {
+            event.preventDefault();//to stop form from submission till we verify the input 
+            var mainIngredient = document.querySelector("#mainIngredientTextBox").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/filter.php?i=${mainIngredient}`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealObject = JSON.parse(xhr.responseText);
+                    console.log(mealObject);
+                    if (mealObject.meals != null && mealObject.meals.length > 0 && mainIngredient != '') {
+                        mainIngredientForm.submit();
+                    }
+                    else {//in case wrong input or a meal that is not in the database
+                        document.querySelector("#mainIngredientTextBox").style.backgroundColor = 'red';
+                        document.querySelector("#MainIngredientErrorMsgId").innerHTML = ' invalid input';
+
+                    }
+                }
+            }
+            xhr.send();
+            document.querySelector("#mainIngredientTextBox").onfocus = function () {
+                document.querySelector("#mainIngredientTextBox").style.backgroundColor = 'white'
+                document.querySelector("#MainIngredientErrorMsgId").innerHTML = '';
+
+            };
+        }
+
+        /*********************************************************************************/
+        document.categoryForm.addEventListener('submit', function () {
+            recipeFinderByCategory(event);
+        });
+        function recipeFinderByCategory(event) {
+            event.preventDefault();//to stop form from submission till we verify the input 
+            var category = document.querySelector("#categoryTextBox").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealsObject = JSON.parse(xhr.responseText);
+                    console.log(mealsObject);
+                    if (mealsObject.meals != null && mealsObject.meals.length > 0 && category != '') {
+                        categoryForm.submit();
+                    }
+                    else {//in case wrong input or a meal that is not in the database
+                        document.querySelector("#categoryTextBox").style.backgroundColor = 'red';
+                        document.querySelector("#categoryErrorMsgId").innerHTML = ' invalid input';
+
+                    }
+                }
+            }
+            xhr.send();
+            document.querySelector("#categoryTextBox").onfocus = function () {
+                document.querySelector("#categoryTextBox").style.backgroundColor = 'white'
+                document.querySelector("#categoryErrorMsgId").innerHTML = '';
+
+            };
+        }
+        /*********************************************************************************/
+        document.areaForm.addEventListener('submit', function () {
+            recipeFinderByArea(event);
+        });
+        function recipeFinderByArea(event) {
+            event.preventDefault();//to stop form from submission till we verify the input 
+            var area = document.querySelector("#areaTextBox").value;
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/filter.php?a=${area}`, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var mealsObject = JSON.parse(xhr.responseText);
+                    console.log(mealsObject);
+                    if (mealsObject.meals != null && mealsObject.meals.length > 0 && area != '') {
+                        areaForm.submit();
+                    }
+                    else {//in case wrong input or a meal that is not in the database
+                        document.querySelector("#areaTextBox").style.backgroundColor = 'red';
+                        document.querySelector("#areaErrorMsgId").innerHTML = ' invalid input';
+                    }
+                }
+            }
+            xhr.send();
+            document.querySelector("#areaTextBox").onfocus = function () {
+                document.querySelector("#areaTextBox").style.backgroundColor = 'white'
+                document.querySelector("#areaErrorMsgId").innerHTML = '';
+
+            };
+        }
+
+
+        /***************fill filter box with areas*******************/
+        fillFilterBoxWithAreas();
+        function fillFilterBoxWithAreas() {
+            var xhr = new XMLHttpRequest();
+            xhr.open('get', 'https://www.themealdb.com/api/json/v1/1/list.php?a=list', true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var areas = JSON.parse(xhr.responseText).meals;
+                    console.log(areas);
+                    console.log(areas[0]);
+
+                    /********create li element******/
+                    for (let area of areas) {
+                        var item = document.createElement('li');
+                        item.innerText = area.strArea;
+                        document.querySelector("#areaList").append(item);
+                        item.onclick = function () {
+                            xhr = new XMLHttpRequest();
+                            xhr.open('get', `https://www.themealdb.com/api/json/v1/1/filter.php?a=${area.strArea}`, true);
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState == 4 && xhr.status == 200) {
+                                    document.querySelector("#areaTextBox").value = area.strArea;
+                                    areaForm.submit();
+                                }
+                            }
+                            xhr.send();
+                        }
+                    }
+                }
+            }
+            xhr.send();
+        }
+        /************************************************************/
+
+    </script>
+
+
+
+</body>
+
+</html>
